@@ -1,4 +1,4 @@
-
+```markdown
       /\_/\           `7MMF'    db      `YMM'   `MP' `7MM"""YMM  `7MN.   `7MF'
      ( o.o )            MM     ;MM:       VMb.  ,P     MM    `7    MMN.    M  
       > ^ <             MM    ,V^MM.       `MM.M'      MM   d      M YMb   M  
@@ -16,13 +16,32 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go)](https://golang.org/)
 
-</div>
-
 ---
+
+> **JAXEN** is a stateful, Go-based reconnaissance framework designed to map modern enterprise attack surfaces. Powered by the Shodan API and a local SQLite intelligence database, it features specialized modules for hunting AI/LLM infrastructure, enumerating enterprise gateways (like Menlo Security), continuously diffing network states, and performing deep TLS certificate forensics on live hosts and firmware root file systems.
 
 ## 📖 Overview
 
-**JAXEN** is a comprehensive, multi-stage OSINT and reconnaissance framework built in Go. Designed for security researchers, penetration testers, and threat hunters, JAXEN uses the Shodan API to map exposed enterprise assets. It specializes in **AI/LLM infrastructure discovery**, **enterprise gateway analysis**, and **certificate forensics**, tracking all findings in a local SQLite database for continuous attack surface management. 
+**JAXEN** is an advanced, multi-stage OSINT and threat hunting platform written in Go. Unlike stateless recon scripts, JAXEN operates around a local SQLite intelligence database (`empire.db`), allowing security researchers to ingest, track, analyze, and script against exposed assets over time. 
+
+By deeply integrating with the Shodan API, JAXEN abstracts away complex querying and provides out-of-the-box modules tailored for the modern technology stack. Its core capabilities, derived directly from the codebase, include:
+
+**1. AI/ML Infrastructure Discovery (`cmd_ai_hunt.go`, `cmd_aimap.go`)**  
+JAXEN natively understands the AI attack surface. It uses pre-categorized workflows to hunt for exposed Vector Databases (Qdrant, Milvus), Inference engines (Ollama, vLLM), ML Orchestrators (LangChain, n8n), MLOps platforms (MLflow), and AI Gateways. It can also wrapper external tools like `aimap` for active probing.
+
+**2. Stateful Intelligence & Scripting (`db.go`, `cmd_run.go`, `cmd_list.go`)**  
+All hunted assets, organizational metadata, and raw Shodan banners are stored locally. Researchers can use the `run` command to execute ad-hoc Go scripts directly against the `empire.db` context, enabling custom post-processing and advanced querying without writing separate tools.
+
+**3. Enterprise Edge & Gateway Enumeration (`cmd_menlo_hunt.go`, `cmd_buckets.go`, `cmd_profile.go`)**  
+The tool contains specialized workflows to map hidden enterprise attack surfaces. This includes hunting for Menlo Security web isolation gateways (tracking JARMs and exposing origin IPs), profiling target environments (clinical, residential, commercial), and discovering exposed public cloud storage buckets associated with specific organizations.
+
+**4. Forensics, Diffing, and CI/CD Integration (`cmd_cert_parse.go`, `cmd_diff.go`, `cmd_pivot.go`)**  
+JAXEN is built for continuous attack surface management (ASM). It can diff historical JSON snapshots of reconnaissance data to highlight new assets, pushing alerts directly to Slack/Discord via webhooks. Additionally, its forensics engine can deeply parse TLS certificates from live IPs, PEM files, or even raw, extracted firmware directories (`squashfs-root`) to uncover internal CA leaks and mTLS configurations.
+
+**5. Visual & Interactive Analysis (`cmd_analyze.go`, `cmd_graph.go`)**  
+Beyond raw data collection, JAXEN provides an interactive analysis terminal to recommend probes and generates ASCII node-graphs of the target's organizational network, making it easier for red teams to visualize pivot points.
+
+---
 
 ## ✨ Key Features
 
@@ -155,3 +174,10 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 > **Disclaimer:** JAXEN is built for educational, security research, and defensive purposes. Always ensure you have explicit permission before actively probing, pivoting, or exploiting targeted infrastructure.
 ```
+
+**Copy-paste ready!**
+
+- **GitHub "About" section**: Use the short description block I placed right after the badges (it's already formatted perfectly for the repo description).
+- Everything else in the README has been cleanly merged: your new technical deep-dive is now the main Overview (with direct references to the actual `.go` files), while keeping all your excellent command tables, usage examples, and ecosystem links intact.
+
+Just replace your current `README.md` with the content above and you’re good to go. Let me know if you want any tweaks!
