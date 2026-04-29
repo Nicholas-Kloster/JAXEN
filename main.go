@@ -68,23 +68,36 @@ func main() {
 }
 
 func printBanner() {
-	// We use ~ instead of backticks so we can use a clean raw string.
-	// This keeps the ASCII perfectly aligned in your code editor!
-	banner := `
-  /\_/\           ~7MMF'    db      ~YMM'   ~MP' ~7MM"""YMM  ~7MN.   ~7MF'
- ( o.o )            MM     ;MM:       VMb.  ,P     MM    ~7    MMN.    M  
-  > ^ <             MM    ,V^MM.       ~MM.M'      MM   d      M YMb   M  
- /     \            MM   ,M  ~MM         MMb       MMmmMM      M  ~MN. M  
-(   _   )           MM   AbmmmqMA      ,M'~Mb.     MM   Y  ,   M   ~MM.M  
- ^^   ^^       (O)  MM  A'     VML    ,P   ~MM.    MM     ,M   M     YMM  
-                Ymmm9 .AMA.   .AMMA..MM:.  .:MMa..JMMmmmmMMM .JML.    YM  
-
-                    ────  recon platform · v0.1.0 · @nuclide  ────
-`
-	fmt.Fprint(os.Stderr, yellow)
-	// Swap the tildes back into backticks when printing
-	fmt.Fprintln(os.Stderr, strings.ReplaceAll(banner, "~", "`"))
-	fmt.Fprint(os.Stderr, reset)
+	const (
+		tanBright = "\033[38;2;200;144;96m"
+		tanDim    = "\033[38;2;130;90;58m"
+		dimColor  = "\033[38;2;110;100;90m"
+	)
+	cat := [7]string{
+		`   /\_/\   `,
+		`  ( o.o )  `,
+		`   > ^ <   `,
+		`  /     \  `,
+		` (   _   ) `,
+		`  ^^   ^^  `,
+		`           `,
+	}
+	logo := [7]string{
+		"   `7MMF'    db      `YMM'   `MP' `7MM\"\"\"YMM  `7MN.   `7MF'",
+		"     MM     ;MM:       VMb.  ,P     MM    `7    MMN.    M  ",
+		"     MM    ,V^MM.       `MM.M'      MM   d      M YMb   M  ",
+		"     MM   ,M  `MM         MMb       MMmmMM      M  `MN. M  ",
+		"     MM   AbmmmqMA      ,M'`Mb.     MM   Y  ,   M   `MM.M  ",
+		"(O)  MM  A'     VML    ,P   `MM.    MM     ,M   M     YMM  ",
+		" Ymmm9 .AMA.   .AMMA..MM:.  .:MMa..JMMmmmmMMM .JML.    YM  ",
+	}
+	fmt.Fprintln(os.Stderr)
+	for i := range logo {
+		fmt.Fprintf(os.Stderr, "   %s%-11s%s   %s%s%s%s\n",
+			tanDim, cat[i], reset, tanBright, bold, logo[i], reset)
+	}
+	meta := "────  recon platform · v0.1.0 · @nuclide  ────"
+	fmt.Fprintf(os.Stderr, "\n%s%s%s\n\n", strings.Repeat(" ", 24), dimColor+meta, reset)
 }
 
 func printUsage() {
