@@ -1,5 +1,9 @@
 # JAXEN
 
+<p align="center">
+  <img src="logo.svg" alt="JAXEN" width="680"/>
+</p>
+
 Shodan-based recon platform with a SQLite backend. Designed for internet-wide asset discovery, microservice exposure analysis, AI/ML infrastructure hunting, and coordinated disclosure workflows.
 
 Built and maintained by [NuClide](https://nuclide-research.com).
