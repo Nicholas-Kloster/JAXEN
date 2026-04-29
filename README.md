@@ -1,125 +1,155 @@
-# JAXEN
+```markdown
+<div align="center">
 
+```text
+     _    _  __  ____  __  ____  _  _
+  _ | |  /_\ \ \/ /  ___||  \| |
+ | || | / _ \ >  <|  _|  | .`  |
+  \__/ /_/ \_\/\_\___| |_|\__|
 ```
-     _  _   __  _____ _  _ 
-  _ | |/_\  \ \/ / __| \| |
- | || / _ \  >  <| _|| .` |
-  \__/_/ \_\/_/\_\___|_|\_|
 
-JAXEN
-```
+**Advanced Reconnaissance & AI/ML Infrastructure Hunting Platform**
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/Nicholas-Kloster/JAXEN)](https://goreportcard.com/report/github.com/Nicholas-Kloster/JAXEN)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Go Version](https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go)](https://golang.org/)
+
+</div>
 
 ---
 
-## Install
+## 📖 Overview
 
-```bash
-git clone https://github.com/Nicholas-Kloster/JAXEN
-cd JAXEN
-go build -o jaxen .
-```
+**JAXEN** is a comprehensive, multi-stage OSINT and reconnaissance framework built in Go. Designed for security researchers, penetration testers, and threat hunters, JAXEN uses the Shodan API to map exposed enterprise assets. It specializes in **AI/LLM infrastructure discovery**, **enterprise gateway analysis**, and **certificate forensics**, tracking all findings in a local SQLite database for continuous attack surface management. 
 
-Requires a Shodan API key:
+## ✨ Key Features
 
-```bash
-export SHODAN_API_KEY=your_key_here
-```
+- 🧠 **AI/LLM Infrastructure Mapping:** Pre-built, categorized dorks to expose Vector databases, Inference endpoints (Ollama, vLLM), ML orchestration systems (LangChain, n8n), and MLOps platforms.
+- 🔐 **Deep Certificate Forensics:** Extract and analyze TLS certificates from live hosts, PEM/CRT files, or raw firmware dumps to identify mTLS flags, SANs, and internal CA leaks.
+- 🏢 **Enterprise Gateway Hunting:** Dedicated modules to uncover enterprise setups like Menlo Security deployments and their exposed origin servers.
+- 📊 **Continuous Recon & Alerting:** Diff snapshots of your reconnaissance data to detect new attack surfaces, and optionally pipe alerts to Slack/Discord webhooks.
+- 🗄️ **Local Intelligence DB:** All results are stored in a local SQLite database (`empire.db`), allowing you to execute ad-hoc Go scripts against your recon context.
 
 ---
 
-## Commands
+## 🚀 Installation & Setup
 
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Nicholas-Kloster/JAXEN.git
+   cd JAXEN
+   ```
+
+2. **Build the binary:**
+   ```bash
+   go build -o jaxen .
+   ```
+
+3. **Configure your environment:**
+   JAXEN requires a Shodan API key to perform passive reconnaissance.
+   ```bash
+   export SHODAN_API_KEY="your_shodan_api_key_here"
+   ```
+
+---
+
+## 🛠️ Command Reference
+
+JAXEN's capabilities are broken down into logical modules. Run `./jaxen <command> --help` for specific flags.
+
+### 🕵️‍♂️ Hunting & Reconnaissance
 | Command | Description |
-|---------|-------------|
-| `hunt` | Run a Shodan query and store results in empire.db |
-| `analyze` | Interactively analyze stored results with probing suggestions |
-| `ai-hunt` | Run pre-built Shodan dorks targeting AI/ML infrastructure |
-| `menlo-hunt` | Discover Menlo Security gateway deployments and exposed origin IPs |
-| `aimap` | Delegate to the aimap binary for deep AI/ML service enumeration |
-| `profile` | Classify a target (honeypot / clinical / research / commercial / residential) |
-| `cert-parse` | Inspect TLS certificates from PEM/CRT files or firmware dump directories |
-| `pivot` | Deep-dive a single URL: headers, TLS cert, JS secrets, open redirects |
-| `diff` | Compare two recon snapshots, optionally post a webhook alert on new findings |
-| `import` | Import IPs/hostnames from a file into empire.db with optional Shodan enrichment |
-| `buckets` | Enumerate public cloud storage buckets for a given org name |
-| `list` | List stored results, optionally filtered by org |
-| `nuke` | Remove one or more IPs from empire.db |
-| `graph` | Print an ASCII graph of findings by org |
-| `run` | Execute an ad-hoc Go script with access to the empire.db context |
-| `cheatsheet` | Print Shodan dork cheatsheet by category |
+|---|---|
+| `hunt` | Run a raw Shodan query and ingest the results into the database. |
+| `ai-hunt` | Execute pre-built intelligence workflows targeting exposed AI/ML infrastructure. |
+| `menlo-hunt` | Discover Menlo Security gateway deployments and exposed origin IPs. |
+| `buckets` | Enumerate public cloud storage buckets associated with a given organization. |
+
+### 🔬 Profiling & Forensics
+| Command | Description |
+|---|---|
+| `cert-parse` | Deep-inspect TLS certs from PEM files or firmware rootfs directories. |
+| `profile` | Classify a target IP (e.g., honeypot, clinical, commercial, residential). |
+| `pivot` | Deep-dive a single URL to extract headers, JS secrets, and test open redirects. |
+| `aimap` | Delegate to the external `aimap` binary for active AI/ML service enumeration. |
+
+### 📈 Analysis & Attack Surface Management
+| Command | Description |
+|---|---|
+| `analyze` | Interactively analyze stored database results with automated probing suggestions. |
+| `diff` | Compare two recon snapshots (JSON) and optionally trigger webhook alerts on new findings. |
+| `graph` | Print an ASCII network/organizational graph of your current findings. |
+
+### 🗄️ Database Utilities
+| Command | Description |
+|---|---|
+| `import` | Import IPs or hostnames from a file into `empire.db` with Shodan enrichment. |
+| `list` | List all stored results, with optional filtering by organization. |
+| `nuke` | Purge one or more targeted IPs from your local database. |
+| `run` | Execute ad-hoc Go scripts with direct access to the `empire.db` context. |
+| `cheatsheet` | Display a built-in cheat sheet of Shodan dorks by category. |
 
 ---
 
-## Usage Examples
+## 🎯 Usage Examples
 
+### AI Infrastructure Discovery
+Hunt for exposed AI systems. You can target all categories or narrow it down to specific infrastructure (e.g., `vector-db`, `inference`, `orchestration`, `gpu`, `mlops`, `gateway`):
 ```bash
-# Discover exposed Spring Boot Actuator services on port 8081
-./jaxen hunt --clean --export "port:8081 Actuator"
-
-# Analyze stored results interactively
-./jaxen analyze
-
-# Hunt for exposed AI/ML infrastructure (all categories)
+# Hunt for all exposed AI/ML infrastructure
 ./jaxen ai-hunt all
 
-# Hunt for vector databases only
+# Hunt specifically for vector databases (Qdrant, Milvus, Weaviate, etc.)
 ./jaxen ai-hunt vector-db
+```
 
-# Find Menlo Security gateways and exposed origin servers
-./jaxen menlo-hunt
+### Attack Surface Diffing & Webhooks
+Great for continuous monitoring (Cron/CI). Compare today's findings against yesterday's and send new assets to Slack:
+```bash
+./jaxen diff --webhook "https://hooks.slack.com/services/T0000/B0000/XXXX" old_recon.json new_recon.json
+```
 
-# Parse certificates from a firmware extraction directory
-./jaxen cert-parse /path/to/firmware/rootfs/
+### General Threat Hunting & Analysis
+```bash
+# Discover exposed Spring Boot Actuator services on a specific port
+./jaxen hunt --clean --export "port:8081 Actuator"
 
-# Profile a target IP
-./jaxen profile 1.2.3.4
+# Start an interactive analysis session for the assets currently in your DB
+./jaxen analyze
+```
 
-# Diff two snapshots and post to Slack
-./jaxen diff --webhook https://hooks.slack.com/... old.json new.json
+### Firmware Certificate Extraction
+Feed JAXEN a directory containing extracted firmware file systems to hunt for internal PKI leaks and expiring certs:
+```bash
+./jaxen cert-parse /path/to/extracted/squashfs-root/
 ```
 
 ---
 
-## AI-Hunt Categories
+## 🧠 Supported AI-Hunt Categories
 
-| Category | Description |
-|----------|-------------|
-| `vector-db` | Exposed Qdrant, Weaviate, Milvus, ChromaDB instances |
-| `inference` | Ollama, vLLM, llama.cpp, LocalAI servers |
-| `orchestration` | LangChain, Flowise, n8n, Dify, Langfuse |
-| `gpu` | NVIDIA DCGM, NVML management endpoints |
-| `mlops` | MLflow, DVC, Weights & Biases, BentoML |
-| `gateway` | LiteLLM, Kong AI Gateway, OpenRouter proxies |
-| `all` | All of the above |
+JAXEN maps the modern AI tech stack with highly specific queries:
+- **`vector-db`**: Qdrant, Weaviate, Milvus, ChromaDB.
+- **`inference`**: Ollama, vLLM, llama.cpp, LocalAI.
+- **`orchestration`**: LangChain, Flowise, n8n, Dify, Langfuse.
+- **`gpu`**: NVIDIA DCGM, NVML management interfaces.
+- **`mlops`**: MLflow, DVC, Weights & Biases, BentoML.
+- **`gateway`**: LiteLLM, Kong AI Gateway, OpenRouter proxies.
 
 ---
 
-## cert-parse
+## 🔗 Related Ecosystem
 
-Walks firmware dump directories looking for `.pem`, `.crt`, `.cer` files and surfaces:
-
-- Subject CN / O / OU, Issuer, Serial
-- SANs (DNS, IP, Email)
-- Expiry with color-coded warning (30-day threshold)
-- Client Auth EKU flag (`[YES — usable for mTLS]`)
-- AIA CA URLs and CRL distribution points (leaks internal CA hostnames)
+JAXEN pairs beautifully with other specialized tools in the recon/exploit ecosystem:
+* **[aimap](https://github.com/Nicholas-Kloster/aimap)** — Deep AI/ML infrastructure enumerator supporting 36 service types and 26 dedicated probes.
+* **[BARE](https://github.com/Nicholas-Kloster/BARE)** — Semantic exploit matching engine against the Metasploit corpus.
+* **[VisorGraph](https://github.com/Nicholas-Kloster/VisorGraph)** — Seed-polymorphic reconnaissance graph engine.
 
 ---
 
-## Database
+## 📜 License
 
-Results are stored in `empire.db` (SQLite). Schema includes `hosts`, `cloud_assets`, and session metadata. The `run` subcommand lets you execute arbitrary Go scripts against the database for custom analysis.
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
----
-
-## Related Tools
-
-- **[aimap](https://github.com/Nicholas-Kloster/aimap)** — AI/ML infrastructure deep enumerator (36 service types, 26 dedicated probes)
-- **[BARE](https://github.com/Nicholas-Kloster/BARE)** — Semantic exploit matching against Metasploit corpus
-- **[VisorGraph](https://github.com/Nicholas-Kloster/VisorGraph)** — Seed-polymorphic recon graph engine
-
----
-
-## License
-
-MIT
+> **Disclaimer:** JAXEN is built for educational, security research, and defensive purposes. Always ensure you have explicit permission before actively probing, pivoting, or exploiting targeted infrastructure.
+```
