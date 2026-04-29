@@ -1,8 +1,14 @@
 # JAXEN
 
-<p align="center">
-  <img src="logo.svg" alt="JAXEN" width="680"/>
-</p>
+```
+  /\     /\        JJJ   A   X   X EEEEE N   N
+ /  \___/  \        J   A A   X X  E     NN  N
+( (>)   (<) )       J  AAAAA   X   EEEE  N N N
+  \   ^   /      J  J  A   A  X X  E     N  NN
+   \_____/        JJ   A   A X   X EEEEE N   N
+
+               recon platform
+```
 
 Shodan-based recon platform with a SQLite backend. Designed for internet-wide asset discovery, microservice exposure analysis, AI/ML infrastructure hunting, and coordinated disclosure workflows.
 
