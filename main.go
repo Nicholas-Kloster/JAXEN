@@ -22,6 +22,7 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
+		printBanner()
 		printUsage()
 		os.Exit(1)
 	}
@@ -65,8 +66,30 @@ func main() {
 	}
 }
 
+func printBanner() {
+	fmt.Fprint(os.Stderr, yellow)
+	fmt.Fprintln(os.Stderr, `.       .'.                      `)
+	fmt.Fprintln(os.Stderr, `  : '.--'-/ ::                   `)
+	fmt.Fprintln(os.Stderr, "  :;'_';'`_'':                   ")
+	fmt.Fprintln(os.Stderr, `  ://o)._(o\ '.                           █████   █████████   █████ █████ ██████████ ██████   █████`)
+	fmt.Fprintln(os.Stderr, ` ;'  (O_.''.   ;                         ░░███   ███░░░░░███ ░░███ ░░███ ░░███░░░░░█░░██████ ░░███ `)
+	fmt.Fprintln(os.Stderr, `  '._;|_/_: _.'                           ░███  ░███    ░███  ░░███ ███   ░███  █ ░  ░███░███ ░███ `)
+	fmt.Fprintln(os.Stderr, `     .'-'.'\                              ░███  ░███████████   ░░█████    ░██████    ░███░░███░███ `)
+	fmt.Fprintln(os.Stderr, "    ,'   ;  `'._                          ░███  ░███░░░░░███    ███░███   ░███░░█    ░███ ░░██████ ")
+	fmt.Fprintln(os.Stderr, "    ';.   ;/    '-.    ____         ███   ░███  ░███    ░███   ███ ░░███  ░███ ░   █ ░███  ░░█████ ")
+	fmt.Fprintln(os.Stderr, "    :';   :        :-'`  : '.      ░░████████   █████   █████ █████ █████ ██████████ █████  ░░█████")
+	fmt.Fprintln(os.Stderr, `    :,,/:. \  ,.'   :     :  '.     ░░░░░░░░   ░░░░░   ░░░░░ ░░░░░ ░░░░░ ░░░░░░░░░░ ░░░░░    ░░░░░ `)
+	fmt.Fprintln(os.Stderr, `   _; /;,:'|,,(   _.'-.__:_..'   `)
+	fmt.Fprintln(os.Stderr, `  :,,:    _: /'--;               `)
+	fmt.Fprintln(os.Stderr, `         :,,:-'-'                `)
+	fmt.Fprintln(os.Stderr, ``)
+	fmt.Fprintln(os.Stderr, `                                  recon platform`)
+	fmt.Fprint(os.Stderr, reset)
+	fmt.Fprintln(os.Stderr, ``)
+}
+
 func printUsage() {
-	fmt.Fprintln(os.Stderr, "usage: goharvester <command> [flags] [args]")
+	fmt.Fprintln(os.Stderr, "usage: jaxen <command> [flags] [args]")
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, "commands:")
 	fmt.Fprintln(os.Stderr, `  hunt        [--clean] [--export] [--passive <domain>] "<query>"`)
