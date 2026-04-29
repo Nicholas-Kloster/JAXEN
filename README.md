@@ -1,18 +1,23 @@
 # JAXEN
 
+```ansi
+[33m.       .'.                       [0m
+[33m  : '.--'-/ ::                    [0m
+[33m  :;'_';'`_'':                    [0m
+[33m  ://o)._(o\ '.                   [0m
+[33m ;'  (O_.''.   ;                      JJJ   A   X   X EEEEE N   N[0m
+[33m  '._;|_/_: _.'                        J   A A   X X  E     NN  N[0m
+[33m     .'-'.'\                           J  AAAAA   X   EEEE  N N N[0m
+[33m    ,'   ;  `'._                    J  J  A   A  X X  E     N  NN[0m
+[33msnd ';.   ;/    '-.    ____          JJ   A   A X   X EEEEE N   N[0m
+[33m    :';   :        :-'`  : '.     [0m
+[33m    :,,/:. \  ,.'   :     :  '.   [0m
+[33m   _; /;,:'|,,(   _.'-.__:_..'    [0m
+[33m  :,,:    _: /'--;                [0m
+[33m         :,,:-'-'                 [0m
+[33m[0m
+[33m                                recon platform[0m
 ```
-  /\     /\        JJJ   A   X   X EEEEE N   N
- /  \___/  \        J   A A   X X  E     NN  N
-( (>)   (<) )       J  AAAAA   X   EEEE  N N N
-  \   ^   /      J  J  A   A  X X  E     N  NN
-   \_____/        JJ   A   A X   X EEEEE N   N
-
-               recon platform
-```
-
-Shodan-based recon platform with a SQLite backend. Designed for internet-wide asset discovery, microservice exposure analysis, AI/ML infrastructure hunting, and coordinated disclosure workflows.
-
-Built and maintained by [NuClide](https://nuclide-research.com).
 
 ---
 
