@@ -68,7 +68,7 @@ func main() {
 
 func printBanner() {
 	fmt.Fprint(os.Stderr, yellow)
-	fmt.Fprintln(os.Stderr, `.       .'.                      `)
+	fmt.Fprintln(os.Stderr, `  .'.   .'.                      `)
 	fmt.Fprintln(os.Stderr, `  : '.--'-/ ::                   `)
 	fmt.Fprintln(os.Stderr, "  :;'_';'`_'':                   ")
 	fmt.Fprintln(os.Stderr, `  ://o)._(o\ '.                           █████   █████████   █████ █████ ██████████ ██████   █████`)
