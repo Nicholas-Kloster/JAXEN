@@ -68,14 +68,12 @@ func main() {
 
 func printBanner() {
 	fmt.Fprint(os.Stderr, yellow)
-	fmt.Fprintln(os.Stderr, `   /\___/\          _  _   __  _____ _  _ `)
-	fmt.Fprintln(os.Stderr, `  /  o.o  \      _ | |/_\  \ \/ / __| \| |`)
-	fmt.Fprintln(os.Stderr, `  \   ^   /     | || / _ \  >  <| _|| .`+"`"+` |`)
-	fmt.Fprintln(os.Stderr, "   `-----'       \\__/_/ \\_\\/_/\\_\\___|_|\\_|")
-	fmt.Fprintln(os.Stderr, ``)
-	fmt.Fprintln(os.Stderr, `              ── shodan recon platform ──`)
+	fmt.Fprintln(os.Stderr, "     _  _   __  _____ _  _ ")
+	fmt.Fprintln(os.Stderr, "  _ | |/_\\  \\ \\/ / __| \\| |")
+	fmt.Fprintln(os.Stderr, " | || / _ \\  >  <| _|| .` |")
+	fmt.Fprintln(os.Stderr, "  \\__/_/ \\_\\/_/\\_\\___|_|\\_|")
 	fmt.Fprint(os.Stderr, reset)
-	fmt.Fprintln(os.Stderr, ``)
+	fmt.Fprintln(os.Stderr, "")
 }
 
 func printUsage() {
