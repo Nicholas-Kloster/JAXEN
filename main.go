@@ -2,15 +2,15 @@
 //
 // Commands:
 //   hunt      [--clean] [--export] [--passive <domain>] <query>
-//   analyze   [--fast]
+//   analyze[--fast]
 //   cheatsheet
 //   pivot     <url>
-//   diff      [--webhook <url>] [old.json] [new.json]
-//   list      [--org <filter>]
+//   diff[--webhook <url>] [old.json] [new.json]
+//   list[--org <filter>]
 //   nuke      <ip> [ip...]
 //   graph
 //   run       <file.go> [args...]
-//   import    [--no-lookup] [--delay N] [--source name] <file>
+//   import    [--no-lookup] [--delay N][--source name] <file>
 //   buckets   [--workers N] [--timeout N] <org-name>
 //   ai-hunt   [category]
 package main
@@ -68,10 +68,15 @@ func main() {
 
 func printBanner() {
 	fmt.Fprint(os.Stderr, yellow)
-	fmt.Fprintln(os.Stderr, "     _  _   __  _____ _  _ ")
-	fmt.Fprintln(os.Stderr, "  _ | |/_\\  \\ \\/ / __| \\| |")
-	fmt.Fprintln(os.Stderr, " | || / _ \\  >  <| _|| .` |")
-	fmt.Fprintln(os.Stderr, "  \\__/_/ \\_\\/_/\\_\\___|_|\\_|")
+	fmt.Fprintln(os.Stderr, "  /\\_/\\           `7MMF'    db      `YMM'   `MP' `7MM\"\"\"YMM  `7MN.   `7MF'")
+	fmt.Fprintln(os.Stderr, " ( o.o )            MM     ;MM:       VMb.  ,P     MM    `7    MMN.    M  ")
+	fmt.Fprintln(os.Stderr, "  > ^ <             MM    ,V^MM.       `MM.M'      MM   d      M YMb   M  ")
+	fmt.Fprintln(os.Stderr, " /     \\            MM   ,M  `MM         MMb       MMmmMM      M  `MN. M  ")
+	fmt.Fprintln(os.Stderr, "(   _   )           MM   AbmmmqMA      ,M'`Mb.     MM   Y  ,   M   `MM.M  ")
+	fmt.Fprintln(os.Stderr, " ^^   ^^       (O)  MM  A'     VML    ,P   `MM.    MM     ,M   M     YMM  ")
+	fmt.Fprintln(os.Stderr, "                Ymmm9 .AMA.   .AMMA..MM:.  .:MMa..JMMmmmmMMM .JML.    YM  ")
+	fmt.Fprintln(os.Stderr, "")
+	fmt.Fprintln(os.Stderr, "                    ────  recon platform · v0.1.0 · @nuclide  ────")
 	fmt.Fprint(os.Stderr, reset)
 	fmt.Fprintln(os.Stderr, "")
 }
@@ -80,19 +85,20 @@ func printUsage() {
 	fmt.Fprintln(os.Stderr, "usage: jaxen <command> [flags] [args]")
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, "commands:")
-	fmt.Fprintln(os.Stderr, `  hunt        [--clean] [--export] [--passive <domain>] "<query>"`)
-	fmt.Fprintln(os.Stderr, "  analyze     [--fast]")
+	fmt.Fprintln(os.Stderr, `  hunt        [--clean] [--export][--passive <domain>] "<query>"`)
+	fmt.Fprintln(os.Stderr, "  analyze[--fast]")
 	fmt.Fprintln(os.Stderr, "  cheatsheet")
 	fmt.Fprintln(os.Stderr, "  pivot       <url>")
 	fmt.Fprintln(os.Stderr, "  diff        [--webhook <url>] [old.json] [new.json]")
 	fmt.Fprintln(os.Stderr, "  list        [--org <filter>]")
 	fmt.Fprintln(os.Stderr, "  nuke        <ip> [ip...]")
 	fmt.Fprintln(os.Stderr, "  graph")
-	fmt.Fprintln(os.Stderr, "  run         <file.go> [args...]")
+	fmt.Fprintln(os.Stderr, "  run         <file.go>[args...]")
 	fmt.Fprintln(os.Stderr, "  import      [--no-lookup] [--delay N] [--source name] <file>")
 	fmt.Fprintln(os.Stderr, "  buckets     [--workers N] [--timeout N] <org-name>")
-	fmt.Fprintln(os.Stderr, "  ai-hunt     [category]  # e.g. vector-db, inference, orchestration, all")
-	fmt.Fprintln(os.Stderr, "  menlo-hunt  [--org name]          # enterprise gateway JARM + origin-IP discovery")
+	fmt.Fprintln(os.Stderr, "  ai-hunt     [category]            # e.g. vector-db, inference, orchestration, all")
+	fmt.Fprintln(os.Stderr, "  menlo-hunt[--org name]          # enterprise gateway JARM + origin-IP discovery")
 	fmt.Fprintln(os.Stderr, "  aimap       <ip|cidr> [hostname]  # AI service deep enumeration wrapper")
 	fmt.Fprintln(os.Stderr, "  profile     [--org name] [<ip>]   # target intelligence classifier")
+	fmt.Fprintln(os.Stderr, "  cert-parse  <path>                # deeply inspect TLS certs from PEM files or firmware")
 }
