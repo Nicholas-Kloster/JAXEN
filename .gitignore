@@ -1,0 +1,10 @@
+goharvester
+empire.db
+recon_dump.json
+recon_dump.old.json
+summary.csv
+*.csv
+*.old.json
+CLAUDE_PROJECT_CONTEXT.md
+.env
+.claude_actions.sh
