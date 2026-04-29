@@ -6,11 +6,11 @@
 //   cheatsheet
 //   pivot     <url>
 //   diff[--webhook <url>] [old.json] [new.json]
-//   list[--org <filter>]
+//   list      [--org <filter>]
 //   nuke      <ip> [ip...]
 //   graph
 //   run       <file.go> [args...]
-//   import    [--no-lookup] [--delay N][--source name] <file>
+//   import    [--no-lookup] [--delay N] [--source name] <file>
 //   buckets   [--workers N] [--timeout N] <org-name>
 //   ai-hunt   [category]
 package main
@@ -18,6 +18,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -67,18 +68,23 @@ func main() {
 }
 
 func printBanner() {
+	// We use ~ instead of backticks so we can use a clean raw string.
+	// This keeps the ASCII perfectly aligned in your code editor!
+	banner := `
+  /\_/\           ~7MMF'    db      ~YMM'   ~MP' ~7MM"""YMM  ~7MN.   ~7MF'
+ ( o.o )            MM     ;MM:       VMb.  ,P     MM    ~7    MMN.    M  
+  > ^ <             MM    ,V^MM.       ~MM.M'      MM   d      M YMb   M  
+ /     \            MM   ,M  ~MM         MMb       MMmmMM      M  ~MN. M  
+(   _   )           MM   AbmmmqMA      ,M'~Mb.     MM   Y  ,   M   ~MM.M  
+ ^^   ^^       (O)  MM  A'     VML    ,P   ~MM.    MM     ,M   M     YMM  
+                Ymmm9 .AMA.   .AMMA..MM:.  .:MMa..JMMmmmmMMM .JML.    YM  
+
+                    ────  recon platform · v0.1.0 · @nuclide  ────
+`
 	fmt.Fprint(os.Stderr, yellow)
-	fmt.Fprintln(os.Stderr, "  /\\_/\\           `7MMF'    db      `YMM'   `MP' `7MM\"\"\"YMM  `7MN.   `7MF'")
-	fmt.Fprintln(os.Stderr, " ( o.o )            MM     ;MM:       VMb.  ,P     MM    `7    MMN.    M  ")
-	fmt.Fprintln(os.Stderr, "  > ^ <             MM    ,V^MM.       `MM.M'      MM   d      M YMb   M  ")
-	fmt.Fprintln(os.Stderr, " /     \\            MM   ,M  `MM         MMb       MMmmMM      M  `MN. M  ")
-	fmt.Fprintln(os.Stderr, "(   _   )           MM   AbmmmqMA      ,M'`Mb.     MM   Y  ,   M   `MM.M  ")
-	fmt.Fprintln(os.Stderr, " ^^   ^^       (O)  MM  A'     VML    ,P   `MM.    MM     ,M   M     YMM  ")
-	fmt.Fprintln(os.Stderr, "                Ymmm9 .AMA.   .AMMA..MM:.  .:MMa..JMMmmmmMMM .JML.    YM  ")
-	fmt.Fprintln(os.Stderr, "")
-	fmt.Fprintln(os.Stderr, "                    ────  recon platform · v0.1.0 · @nuclide  ────")
+	// Swap the tildes back into backticks when printing
+	fmt.Fprintln(os.Stderr, strings.ReplaceAll(banner, "~", "`"))
 	fmt.Fprint(os.Stderr, reset)
-	fmt.Fprintln(os.Stderr, "")
 }
 
 func printUsage() {
@@ -86,15 +92,15 @@ func printUsage() {
 	fmt.Fprintln(os.Stderr, "")
 	fmt.Fprintln(os.Stderr, "commands:")
 	fmt.Fprintln(os.Stderr, `  hunt        [--clean] [--export][--passive <domain>] "<query>"`)
-	fmt.Fprintln(os.Stderr, "  analyze[--fast]")
+	fmt.Fprintln(os.Stderr, "  analyze     [--fast]")
 	fmt.Fprintln(os.Stderr, "  cheatsheet")
 	fmt.Fprintln(os.Stderr, "  pivot       <url>")
 	fmt.Fprintln(os.Stderr, "  diff        [--webhook <url>] [old.json] [new.json]")
 	fmt.Fprintln(os.Stderr, "  list        [--org <filter>]")
 	fmt.Fprintln(os.Stderr, "  nuke        <ip> [ip...]")
 	fmt.Fprintln(os.Stderr, "  graph")
-	fmt.Fprintln(os.Stderr, "  run         <file.go>[args...]")
-	fmt.Fprintln(os.Stderr, "  import      [--no-lookup] [--delay N] [--source name] <file>")
+	fmt.Fprintln(os.Stderr, "  run         <file.go> [args...]")
+	fmt.Fprintln(os.Stderr, "  import[--no-lookup] [--delay N] [--source name] <file>")
 	fmt.Fprintln(os.Stderr, "  buckets     [--workers N] [--timeout N] <org-name>")
 	fmt.Fprintln(os.Stderr, "  ai-hunt     [category]            # e.g. vector-db, inference, orchestration, all")
 	fmt.Fprintln(os.Stderr, "  menlo-hunt[--org name]          # enterprise gateway JARM + origin-IP discovery")
