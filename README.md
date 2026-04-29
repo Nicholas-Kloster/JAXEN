@@ -174,10 +174,3 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 > **Disclaimer:** JAXEN is built for educational, security research, and defensive purposes. Always ensure you have explicit permission before actively probing, pivoting, or exploiting targeted infrastructure.
 ```
-
-**Copy-paste ready!**
-
-- **GitHub "About" section**: Use the short description block I placed right after the badges (it's already formatted perfectly for the repo description).
-- Everything else in the README has been cleanly merged: your new technical deep-dive is now the main Overview (with direct references to the actual `.go` files), while keeping all your excellent command tables, usage examples, and ecosystem links intact.
-
-Just replace your current `README.md` with the content above and you’re good to go. Let me know if you want any tweaks!
