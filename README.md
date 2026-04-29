@@ -1,7 +1,13 @@
-     _    _  __  ____  __  ____  _  _
-  _ | |  /_\ \ \/ /  ___||  \| |
- | || | / _ \ >  <|  _|  | .`  |
-  \__/ /_/ \_\/\_\___| |_|\__|
+
+      /\_/\           `7MMF'    db      `YMM'   `MP' `7MM"""YMM  `7MN.   `7MF'
+     ( o.o )            MM     ;MM:       VMb.  ,P     MM    `7    MMN.    M  
+      > ^ <             MM    ,V^MM.       `MM.M'      MM   d      M YMb   M  
+     /     \            MM   ,M  `MM         MMb       MMmmMM      M  `MN. M  
+    (   _   )           MM   AbmmmqMA      ,M'`Mb.     MM   Y  ,   M   `MM.M  
+     ^^   ^^       (O)  MM  A'     VML    ,P   `MM.    MM     ,M   M     YMM  
+                    Ymmm9 .AMA.   .AMMA..MM:.  .:MMa..JMMmmmmMMM .JML.    YM  
+
+                        ────  recon platform · v0.1.0 · @nuclide  ────
 ```
 
 **Advanced Reconnaissance & AI/ML Infrastructure Hunting Platform**
