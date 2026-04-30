@@ -1,3 +1,5 @@
+[![Claude Code Friendly](https://img.shields.io/badge/Claude_Code-Friendly-blueviolet?logo=anthropic&logoColor=white)](https://claude.ai/code)
+
 ```markdown
       /\_/\           `7MMF'    db      `YMM'   `MP' `7MM"""YMM  `7MN.   `7MF'
      ( o.o )            MM     ;MM:       VMb.  ,P     MM    `7    MMN.    M  
