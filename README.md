@@ -176,3 +176,24 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 > **Disclaimer:** JAXEN is built for educational, security research, and defensive purposes. Always ensure you have explicit permission before actively probing, pivoting, or exploiting targeted infrastructure.
 ```
+
+## Use with Claude Code
+
+JAXEN builds a stateful SQLite intelligence database — use Claude Code to drive the hunt and interpret empire.db findings interactively.
+
+```
+JAXEN is installed at ~/Tools/JAXEN/. Read README.md, then:
+1. Run ./jaxen ai-hunt [category: vector-db/inference/orchestration/gpu/mlops/gateway/all]
+   against my Shodan key to harvest exposed AI infrastructure into empire.db
+2. Help me run ./jaxen analyze to surface the most interesting pivot points
+3. For the top target IP, run ./jaxen assess [IP] and help me interpret the full passive chain
+Shodan key is in $SHODAN_API_KEY. Target scope: [ASN/org/CIDR or leave blank for global]
+```
+
+```
+I have empire.db with JAXEN recon results.
+Read README.md's `run` command section, then write me a Go script I can run via
+./jaxen run that queries empire.db for [specific filter — e.g., hosts with port 11434
+open + org matching "cloud", or all IPs with "ollama" in their Shodan banner].
+Filter criteria: [describe what you want]
+```
