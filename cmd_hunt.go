@@ -51,22 +51,39 @@ func isCloudNoise(org string) bool {
 func cmdHunt(args []string) {
 	fs := flag.NewFlagSet("hunt", flag.ContinueOnError)
 	fs.SetOutput(os.Stderr)
+	fs.Usage = func() {
+		fmt.Fprintln(os.Stderr, `usage: jaxen hunt [flags] "<query>"`)
+		fmt.Fprintln(os.Stderr, "")
+		fmt.Fprintln(os.Stderr, "flags:")
+		fs.PrintDefaults()
+		fmt.Fprintln(os.Stderr, "")
+		fmt.Fprintln(os.Stderr, "examples:")
+		fmt.Fprintln(os.Stderr, `  jaxen hunt 'http.html:"Ollama is running"'`)
+		fmt.Fprintln(os.Stderr, `  jaxen hunt --max 5000 'product:"Apache" port:8080'`)
+		fmt.Fprintln(os.Stderr, `  jaxen hunt --clean --export 'http.title:"Sub2API"'`)
+	}
 	clean   := fs.Bool("clean", false, "strip CDN/cloud noise")
 	export  := fs.Bool("export", false, "write summary.csv")
 	passive := fs.String("passive", "", "expand via crt.sh CT logs for this domain (e.g. --passive tesla.com)")
+	maxN    := fs.Int("max", 50, "maximum hosts to return (paginates 100/page; counts against Shodan query credits)")
+	delay   := fs.Float64("delay", 1.0, "seconds between pages when paginating")
 	if err := fs.Parse(args); err != nil {
+		if err == flag.ErrHelp {
+			os.Exit(0)
+		}
 		os.Exit(1)
 	}
 	if fs.NArg() < 1 {
 		fmt.Fprintln(os.Stderr, "error: hunt requires a query argument")
-		fmt.Fprintln(os.Stderr, `  e.g. goharvester hunt "hostname:target.com"`)
+		fs.Usage()
 		os.Exit(1)
 	}
 	query := fs.Arg(0)
 
-	apiKey := os.Getenv("SHODAN_API_KEY")
+	apiKey := shodanAPIKey()
 	if apiKey == "" {
-		fmt.Fprintln(os.Stderr, "error: SHODAN_API_KEY environment variable is not set")
+		fmt.Fprintln(os.Stderr, "error: no Shodan API key found")
+		fmt.Fprintln(os.Stderr, "  set SHODAN_API_KEY or place key at ~/.config/shodan/api_key")
 		os.Exit(1)
 	}
 
@@ -98,21 +115,51 @@ func cmdHunt(args []string) {
 	client := shodan.NewClient(nil, apiKey)
 	ctx := context.Background()
 
-	opts := &shodan.HostQueryOptions{Query: query, Page: 1, Minify: false}
 	fmt.Printf("[*] querying Shodan: %s\n", query)
 
-	result, err := client.GetHostsForQuery(ctx, opts)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "error: Shodan query failed: %v\n", err)
-		os.Exit(1)
+	// ── Pagination loop ───────────────────────────────────────────────────
+	// Shodan returns 100 matches per page. Paginate until we have *maxN
+	// hosts OR the population is exhausted OR we hit a server error.
+	var hosts []*shodan.HostData
+	var total int
+	page := 1
+	for {
+		opts := &shodan.HostQueryOptions{Query: query, Page: page, Minify: false}
+		result, err := client.GetHostsForQuery(ctx, opts)
+		if err != nil {
+			if page == 1 {
+				fmt.Fprintf(os.Stderr, "error: Shodan query failed: %v\n", err)
+				os.Exit(1)
+			}
+			// Late-page failure (often page-~70 500 on basic plan per
+			// Insight #35); preserve what we have, warn, and stop.
+			fmt.Fprintf(os.Stderr, "warn: pagination stopped at page %d: %v\n", page, err)
+			break
+		}
+		if total == 0 {
+			total = result.Total
+		}
+		if len(result.Matches) == 0 {
+			break
+		}
+		hosts = append(hosts, result.Matches...)
+		if *maxN > 0 && len(hosts) >= *maxN {
+			hosts = hosts[:*maxN]
+			break
+		}
+		if total > 0 && len(hosts) >= total {
+			break
+		}
+		fmt.Printf("[+] page %3d: cum=%5d / total=%d\n", page, len(hosts), total)
+		page++
+		if *delay > 0 {
+			time.Sleep(time.Duration(*delay * float64(time.Second)))
+		}
 	}
-
-	// ── Cap ───────────────────────────────────────────────────────────────
-	const limit = 50
-	hosts := result.Matches
-	if len(hosts) > limit {
-		hosts = hosts[:limit]
+	if *maxN > 0 && total > *maxN {
+		fmt.Fprintf(os.Stderr, "[*] truncated to --max %d of %d available; raise --max to capture more\n", *maxN, total)
 	}
+	result := struct{ Total int }{Total: total} // for printf below
 
 	// ── --clean ───────────────────────────────────────────────────────────
 	if *clean {

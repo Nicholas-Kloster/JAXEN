@@ -28,6 +28,13 @@ func main() {
 		os.Exit(1)
 	}
 	switch os.Args[1] {
+	case "--help", "-h", "help":
+		printBanner()
+		printUsage()
+		os.Exit(0)
+	case "--version", "-v", "version":
+		fmt.Println(versionString())
+		os.Exit(0)
 	case "hunt":
 		cmdHunt(os.Args[2:])
 	case "analyze":
