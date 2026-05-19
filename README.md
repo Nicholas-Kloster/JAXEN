@@ -68,11 +68,33 @@ Beyond raw data collection, JAXEN provides an interactive analysis terminal to r
    go build -o jaxen .
    ```
 
-3. **Configure your environment:**
-   JAXEN requires a Shodan API key to perform passive reconnaissance.
+3. **Configure your Shodan API key.** JAXEN reads from either:
    ```bash
+   # Option A: env var (precedence)
    export SHODAN_API_KEY="your_shodan_api_key_here"
+
+   # Option B: ~/.config/shodan/api_key (the canonical Shodan-CLI location)
+   mkdir -p ~/.config/shodan && echo "your_shodan_api_key_here" > ~/.config/shodan/api_key
+   chmod 600 ~/.config/shodan/api_key
    ```
+   If both are present, the env var wins. If neither is set, JAXEN
+   prints a clear error pointing at both options.
+
+---
+
+## ✨ What's new (v0.2.0)
+
+- **`hunt --max N`** paginates instead of silently truncating at 50.
+  Default 50 preserves backward compat; raise `--max` to capture more
+  of the population (100 hosts per page, with `--delay` between pages
+  to respect Shodan rate limits). Late-page failure (Insight #35's
+  basic-plan ~70-page 500 wall) preserves partial results and warns.
+- **Shodan API key fallback** to `~/.config/shodan/api_key` so JAXEN
+  works out-of-the-box on machines that already have the Shodan CLI
+  configured.
+- **`--help` / `-h` / `--version`** at the top-level and on `hunt`
+  (`fs.Usage` + Examples). The other 16 subcommands inherit Go's
+  default flag-package behavior.
 
 ---
 
@@ -136,6 +158,11 @@ Great for continuous monitoring (Cron/CI). Compare today's findings against yest
 ```bash
 # Discover exposed Spring Boot Actuator services on a specific port
 ./jaxen hunt --clean --export "port:8081 Actuator"
+
+# Pull a full population (paginates 100/page until --max is reached or
+# the population is exhausted). Default --max 50 preserves old behavior;
+# raise it for population-scale OSINT.
+./jaxen hunt --max 5000 'http.title:"Sub2API - AI API Gateway"'
 
 # Start an interactive analysis session for the assets currently in your DB
 ./jaxen analyze
